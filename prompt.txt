@@ -1,0 +1,137 @@
+
+**Prompt: Build a React App with Name Generation, Cookie-Based Persistence, Maintainable Styling, and Dockerized Deployment**
+
+This project challenges you to create a React application that delights users with quirky, randomly generated names and sets the stage for a fun gaming experience. The application should be designed with future database integration in mind, follow best practices for styling, and be easily deployable using Docker.
+
+**Requirements:**
+- **Unconventional Name Input and Persistence:**
+  - Display a text input field for the user's name.
+  - On the initial visit, pre-fill the input with a randomly generated name that is unconventional and humorous.
+    - Create a separate file (e.g., nameGenerator.ts) containing:
+      - Two arrays: one with descriptive words with an unconventional or humorous slant (e.g., "Wacky," "Skanky," "Stinky") and another with regular names (at least 50 each).  Each array should have 50 words.
+      - A function (e.g., generateRandomName) that combines a random word from each array to create a single camel case word (e.g., SkankyAlice, GrumpyBob).
+    - Import and use the generateRandomName function in your component to get the initial random name.
+  - Store the user's entered name in a cookie, so it's remembered on subsequent visits.
+  - Validate the name input to allow only alphanumeric characters (no spaces or punctuation).
+  - Display an appropriate, user-friendly error message if the input is invalid.
+
+- **Game Actions:**
+  - Display two buttons: "Create Game" and "Join Game".
+  - Initially, both buttons should be disabled.
+  - The "Create Game" button should be enabled only when a valid name is entered.
+  - Clicking "Create Game" should:
+    - Trigger a POST request to a mock API endpoint (e.g., /api/createGame).
+      - Include the player's name in the request body.
+      - Simulate a successful response by displaying a "Creating Game" message or screen with mock data (e.g., a game ID).
+  - The "Join Game" button should be enabled only when a valid name is entered.
+  - Clicking "Join Game" should navigate the user to a new page/screen dedicated to joining a game.
+    - On this new page/screen:
+      - Display an input field for the game ID.
+      - Validate the game ID input to allow only alphanumeric characters (no spaces or punctuation).
+      - Display an appropriate, user-friendly error message if the game ID input is invalid.
+      - A "Join Game" button should be present and initially disabled.
+      - The "Join Game" button on this screen should become enabled only when a valid game ID is entered.
+      - Clicking the "Join Game" button on this screen should:
+        - Trigger a POST request to a different mock API endpoint (e.g., /api/joinGame).
+          - Include the player's name and game ID in the request body.
+          - Simulate a successful response by displaying a "Joining Game" message or screen with mock data.
+
+**Implementation Steps:**
+- **Project Setup:**
+  - Create a new React app using Create React App: npx create-react-app my-app --template typescript
+  - Install styled-components for styling: npm install styled-components
+  - Install js-cookie for cookie management: npm install js-cookie
+
+- **Component Structure:**
+  - Create components for:
+    - NameInput: Handles the name input, cookie persistence, and input validation with error messages.
+    - GameIdInput: Handles the game ID input and input validation with error messages.
+    - CreateGameScreen: Displays a message or screen with mock data while "creating" a game.
+    - JoinGameScreen: This component should encompass the entire "Join Game" page/screen, including the game ID input, validation, "Join Game" button, and the "Joining Game" message/screen.
+
+- **Styling:**
+  - Avoid using inline styles.
+  - Leverage styled-components to create reusable styled components for buttons, inputs, containers, and other UI elements.
+  - Define styles within the styled-components to keep your code clean and maintainable.
+  - Ensure the UI has a clean and modern aesthetic:
+    - Input boxes should have **rounded corners** and **thick borders**.
+    - **Dark Mode Theme**: Use a **blueish theme** with blue borders and buttons. On focus, input fields should have a **glowing blue effect**.
+    - **Light Mode Theme**: Use a **yellow or orange theme** with orange or yellow borders and buttons. On focus, input fields should have a **glowing orange or yellow effect**.
+    - Buttons should have **rounded corners** with hover effects (changing to a darker shade of the primary color).
+    - Display **error messages in red text** below the respective inputs with appropriate spacing.
+    - Ensure input fields have a **glowing effect on focus** for better visual feedback.
+
+- **State Management:**
+  - Use React's useState hook to manage the name, game ID, visibility of different screens/messages, and validation error states.
+
+- **Cookie Handling:**
+  - Use the js-cookie library to read and write the user's name to a cookie.
+
+- **UI and Interactions:**
+  - Design the UI using styled-components.
+  - Implement button click handlers to trigger state changes, mock API calls, and page navigation.
+  - Use conditional rendering to show/hide different screens, messages, and error messages based on the current state.
+
+- **API Calls (Mock Implementation):**
+  - Use fetch or axios to make mock API calls.
+  - Example for "Create Game":
+    ```js
+    fetch('/api/createGame', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: playerName }), 
+    })
+    .then(response => response.json()) 
+    .then(data => {
+      // Handle the mock response (e.g., display game ID)
+    })
+    .catch(error => {
+      // Handle errors
+    });
+    ```
+
+  - Example for "Join Game":
+    ```js
+    fetch('/api/joinGame', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: playerName, gameId: gameId }), 
+    })
+    .then(response => response.json()) 
+    .then(data => {
+      // Handle the mock response
+    })
+    .catch(error => {
+      // Handle errors
+    });
+    ```
+
+- **Error Handling:**
+  - Implement error handling for API calls (and later for WebSocket connections).
+  - Display user-friendly error messages to the user in case of failures.
+
+- **Dockerization:**
+  - Create a Dockerfile to containerize your application.
+  - Use a suitable base image (e.g., node:alpine).
+  - Copy the application code into the container.
+  - Expose the necessary port.
+  - Define the command to start the application.
+  
+  Example Dockerfile:
+  ```dockerfile
+  FROM node:alpine
+
+  WORKDIR /app
+
+  COPY package*.json ./
+
+  RUN npm install
+
+  COPY . .
+
+  RUN npm run build
+
+  EXPOSE 3000
+
+  CMD ["npm", "start"]
+  ```
