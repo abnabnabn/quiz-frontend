@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { createGame } from '../utils/api';
+import { createGame } from '../utils/api.ts';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`

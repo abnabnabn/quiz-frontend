@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { joinGame } from '../utils/api';
+import { joinGame } from '../utils/api.ts';
 
 const Container = styled.div`
   display: flex;

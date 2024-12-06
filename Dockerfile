@@ -10,9 +10,9 @@ RUN npm install
 
 # Copy source code and build the app
 COPY . .
-#RUN npm run build
+RUN npm run build
 
 EXPOSE 3000
 
 # Start the server
-#CMD ["npm", "start"]
+CMD ["npm", "start"]

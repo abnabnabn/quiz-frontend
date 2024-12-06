@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import { lightTheme, darkTheme } from './styles/theme';
-import Home from './components/Home';
-import CreateGameScreen from './components/CreateGameScreen';
-import JoinGameScreen from './components/JoinGameScreen';
+import { lightTheme, darkTheme } from './styles/theme.ts';
+import Home from './components/Home.tsx';
+import CreateGameScreen from './components/CreateGameScreen.tsx';
+import JoinGameScreen from './components/JoinGameScreen.tsx';
 
 const ThemeToggleContainer = styled.div`
   position: absolute;
