@@ -1,13 +1,29 @@
-// src/App.tsx
-import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import { generateRandomName } from './nameGenerator';
-import { ThemeProvider } from 'styled-components';
-import { lightTheme, darkTheme } from './theme';
-import Home from './Home';
-import CreateGameScreen from './CreateGameScreen';
-import JoinGameScreen from './JoinGameScreen';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './styles/theme';
+import Home from './components/Home';
+import CreateGameScreen from './components/CreateGameScreen';
+import JoinGameScreen from './components/JoinGameScreen';
+
+const ThemeToggleContainer = styled.div`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background-color: ${(props) => props.theme.primary};
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.hover};
+  }
+`;
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState(lightTheme);
@@ -20,10 +36,13 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home onToggleTheme={toggleTheme} />} />
+          <Route path="/" element={<Home />} />
           <Route path="/create-game" element={<CreateGameScreen />} />
           <Route path="/join-game" element={<JoinGameScreen />} />
         </Routes>
+        <ThemeToggleContainer>
+          <Button onClick={toggleTheme}>Toggle Theme</Button>
+        </ThemeToggleContainer>
       </Router>
     </ThemeProvider>
   );
