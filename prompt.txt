@@ -73,38 +73,45 @@ This project challenges you to create a React application that delights users wi
   - Use conditional rendering to show/hide different screens, messages, and error messages based on the current state.
 
 - **API Calls (Mock Implementation):**
-  - Use fetch or axios to make mock API calls.
-  - Example for "Create Game":
-    ```js
-    fetch('/api/createGame', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: playerName }), 
-    })
-    .then(response => response.json()) 
-    .then(data => {
-      // Handle the mock response (e.g., display game ID)
-    })
-    .catch(error => {
-      // Handle errors
-    });
-    ```
+  - Use fetch or axios to make API calls - the following services are available
 
-  - Example for "Join Game":
-    ```js
-    fetch('/api/joinGame', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: playerName, gameId: gameId }), 
-    })
-    .then(response => response.json()) 
-    .then(data => {
-      // Handle the mock response
-    })
-    .catch(error => {
-      // Handle errors
-    });
-    ```
+#### **/api/party/init (POST)**  
+- **Request Body**:
+  - `player_id`: String, the ID of the player initiating the party.  
+  - `category`: String, the category of questions for the party.  
+  - `rounds`: Integer, the number of rounds in the game.  
+  - `timeout`: Integer, the duration (in seconds) for each question (default is 30 seconds).  
+
+- **Response**:
+  - `party_id`: String, a unique ID for the created party.  
+
+- **Functionality**:
+  - Creates a new party with a unique `party_id` and `game_id`.  
+  - Initializes the game with the specified number of rounds and timeout duration.  
+  - Initializes the current round to 1 and sets the question timeout in Redis.  
+  - Stores party details in the `parties` table.  
+  - Sends an initial WebSocket notification to all connected clients in the party with the game state.  
+
+#### **/api/party/{party_id}/join (POST)**  
+- **Request Parameters**:
+  - `party_id`: String, the unique ID of the party.  
+
+- **Request Body**:
+  - `user_id`: String, the ID of the user joining the party.  
+
+- **Response**:
+  - JSON object indicating success:  
+    ```json
+    {
+      "message": "Joined party successfully",
+      "game_id": "the game id"
+    }
+    ```  
+- **Functionality**:
+  - Validates the `party_id`.  
+  - Adds the player to the `party_players` table and initializes their score to 0.  
+  - Sends a WebSocket message to all players with the updated party state.  
+    
 
 - **Error Handling:**
   - Implement error handling for API calls (and later for WebSocket connections).
